@@ -34,7 +34,11 @@ generator nestjsDto {
   classValidation                 = "false"
   fileNamingStyle                 = "camel"
   noDependencies                  = "false"
-  entityOnly                      = "false"
+  excludeEntity                   = "false"
+  excludePlainDto                 = "false"
+  excludeCreateDto                = "false"
+  excludeUpdateDto                = "false"
+  excludeConnectDto               = "false"
 }
 ```
 
@@ -52,7 +56,11 @@ All parameters are optional.
 - [`dtoSuffix`]: (default: `"Dto"`) - phrase to suffix every `CreateDTO` and `UpdateDTO` class with
 - [`entityPrefix`]: (default: `""`) - phrase to prefix every `Entity` class with
 - [`entitySuffix`]: (default: `""`) - phrase to suffix every `Entity` class with
-- [`entityOnly`]: (default: `"false"`) - generates just `Entity` classes
+- [`excludeEntity`]: (default: `"false"`) - exclude `Entity` generation
+- [`excludePlainDto`]: (default: `"false"`) - exclude `DTO` generation
+- [`excludeCreateDto`]: (default: `"false"`) - exclude `CreateDTO` generation
+- [`excludeUpdateDto`]: (default: `"false"`) - exclude `UpdateDTO` generation
+- [`excludeConnectDto`]: (default: `"false"`) - exclude `ConnectDTO` generation
 - [`fileNamingStyle`]: (default: `"camel"`) - How to name generated files. Valid choices are `"camel"`, `"pascal"`, `"kebab"` and `"snake"`.
 - [`classValidation`]: (default: `"false"`) - Add validation decorators from `class-validator`. Not compatible with `noDependencies = "true"` and `outputType = "interface"`.
 - [`noDependencies`]: (default: `"false"`) - Any imports and decorators that are specific to NestJS and Prisma are omitted, such that there are no references to external dependencies. This is useful if you want to generate appropriate DTOs for the frontend.
@@ -86,7 +94,7 @@ model Post {
 With `@nestjs/swagger`, you can generate an API specification from code.
 Routes, request bodies, query parameters, etc., are annotated with special decorators.
 Properties can be annotated with the `@ApiProperty()` decorator to add schema object information.
-They are partially added at runtime, which will then include `type`, `nullable`, etc. 
+They are partially added at runtime, which will then include `type`, `nullable`, etc.
 But additional information, such as description, need to be added manually.
 
 If using a generator like this, any custom `@ApiProperty()` annotation would be overridden when updating the DTOs.
@@ -94,24 +102,24 @@ To enhance a field with additional schema information, add the schema property p
 
 Currently, following schema properties are supported:
 
-* `description`
-* `minimum`
-* `maximum`
-* `exclusiveMinimum`
-* `exclusiveMaximum`
-* `minLength`
-* `maxLength`
-* `minItems`
-* `maxItems`
-* `example`
+- `description`
+- `minimum`
+- `maximum`
+- `exclusiveMinimum`
+- `exclusiveMaximum`
+- `minLength`
+- `maxLength`
+- `minItems`
+- `maxItems`
+- `example`
 
 Additionally, special data types are inferred and annotated as well:
 
-* `Int: { type: 'integer', format: 'int32' }`
-* `BigInt: { type: 'integer', format: 'int64' }`
-* `Float: { type: 'number', format: 'float' }`
-* `Decimal: { type: 'number', format: 'double' }`
-* `DateTime: { type: 'string', format: 'date-time' }`
+- `Int: { type: 'integer', format: 'int32' }`
+- `BigInt: { type: 'integer', format: 'int64' }`
+- `Float: { type: 'number', format: 'float' }`
+- `Decimal: { type: 'number', format: 'double' }`
+- `DateTime: { type: 'string', format: 'date-time' }`
 
 #### Example
 
@@ -124,7 +132,7 @@ reviewCount Int?     @default(0)
 ```
 
 will generate `@ApiProperty()` decorator with `description` and `minimum` as properties as well as `type` and `format` to specify the data type.
-If a default value is specified, it gets also added to the decorator. 
+If a default value is specified, it gets also added to the decorator.
 
 ```typescript
 @ApiProperty({
@@ -146,14 +154,14 @@ If the field is optional, it will add `@IsOptional()`, otherwise `@IsNotEmpty()`
 If the field is a list, it will add `@IsArray()`.
 Type validators are inferred from the field's type:
 
-* `String` &rarr; `@IsString()`
-* `Boolean` &rarr; `@IsBoolean()`
-* `Int` &rarr; `@IsInt()`
-* `BigInt` &rarr; `@IsInt()`
-* `Float:` &rarr; `@IsNumber()`
-* `Decimal:` &rarr; `@IsNumber()`
-* `DateTime` &rarr; `@IsRFC3339()`
-* `Json` &rarr; `@IsJSON()`
+- `String` &rarr; `@IsString()`
+- `Boolean` &rarr; `@IsBoolean()`
+- `Int` &rarr; `@IsInt()`
+- `BigInt` &rarr; `@IsInt()`
+- `Float:` &rarr; `@IsNumber()`
+- `Decimal:` &rarr; `@IsNumber()`
+- `DateTime` &rarr; `@IsRFC3339()`
+- `Json` &rarr; `@IsJSON()`
 
 All remaining [validation decorators](https://github.com/typestack/class-validator#validation-decorators) can be added in the comment/documentation section above the field.
 The parentheses can be omitted if not passing a value.
@@ -200,16 +208,16 @@ outputToNestJsResourceStructure = "true"
 }
 
 model Question {
-    id          String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    /// @DtoReadOnly
-    createdAt   DateTime @default(now())
-    /// @DtoRelationRequired
-    createdBy   User? @relation("CreatedQuestions", fields: [createdById], references: [id])
-    createdById String? @db.Uuid
-    updatedAt   DateTime @updatedAt
-    /// @DtoRelationRequired
-    updatedBy   User? @relation("UpdatedQuestions", fields: [updatedById], references: [id])
-    updatedById String? @db.Uuid
+id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+/// @DtoReadOnly
+createdAt DateTime @default(now())
+/// @DtoRelationRequired
+createdBy User? @relation("CreatedQuestions", fields: [createdById], references: [id])
+createdById String? @db.Uuid
+updatedAt DateTime @updatedAt
+/// @DtoRelationRequired
+updatedBy User? @relation("UpdatedQuestions", fields: [updatedById], references: [id])
+updatedById String? @db.Uuid
 
     /// @DtoRelationRequired
     /// @DtoRelationCanConnectOnCreate

@@ -30,7 +30,11 @@ interface RunParam {
   classValidation: boolean;
   outputType: string;
   noDependencies: boolean;
-  entityOnly: boolean;
+  excludeEntity: boolean;
+  excludePlainDto: boolean;
+  excludeCreateDto: boolean;
+  excludeUpdateDto: boolean;
+  excludeConnectDto: boolean;
 }
 
 export const run = ({
@@ -46,7 +50,11 @@ export const run = ({
     classValidation,
     outputType,
     noDependencies,
-    entityOnly,
+    excludeConnectDto,
+    excludeCreateDto,
+    excludeEntity,
+    excludeUpdateDto,
+    excludePlainDto,
     ...preAndSuffixes
   } = options;
 
@@ -163,9 +171,15 @@ export const run = ({
       }),
     };
 
-    return entityOnly
-      ? [entity]
-      : [connectDto, createDto, updateDto, entity, plainDto];
+    const models = [];
+
+    if (!excludeConnectDto) models.push(connectDto);
+    if (!excludeCreateDto) models.push(createDto);
+    if (!excludeUpdateDto) models.push(updateDto);
+    if (!excludePlainDto) models.push(plainDto);
+    if (!excludeEntity) models.push(entity);
+
+    return models;
   });
 
   return [...modelFiles].flat();

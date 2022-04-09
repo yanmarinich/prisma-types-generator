@@ -40,8 +40,28 @@ export const generate = (options: GeneratorOptions) => {
     true,
   );
 
-  const entityOnly = stringToBoolean(
-    options.generator.config.entityOnly,
+  const excludeEntity = stringToBoolean(
+    options.generator.config.excludeEntity,
+    false,
+  );
+
+  const excludePlainDto = stringToBoolean(
+    options.generator.config.excludePlainDto,
+    false,
+  );
+
+  const excludeCreateDto = stringToBoolean(
+    options.generator.config.excludeCreateDto,
+    false,
+  );
+
+  const excludeUpdateDto = stringToBoolean(
+    options.generator.config.excludeUpdateDto,
+    false,
+  );
+
+  const excludeConnectDto = stringToBoolean(
+    options.generator.config.excludeConnectDto,
     false,
   );
 
@@ -122,7 +142,11 @@ export const generate = (options: GeneratorOptions) => {
     classValidation,
     outputType,
     noDependencies,
-    entityOnly,
+    excludeConnectDto,
+    excludeCreateDto,
+    excludeEntity,
+    excludeUpdateDto,
+    excludePlainDto,
   });
 
   const indexCollections: Record<string, WriteableFileSpecs> = {};
@@ -154,7 +178,7 @@ export const generate = (options: GeneratorOptions) => {
 
 generatorHandler({
   onManifest: () => ({
-    defaultOutput: '../src/generated/nestjs-dto',
+    defaultOutput: '../src/generated/types',
     prettyName: 'NestJS DTO Generator',
   }),
   onGenerate: generate,
