@@ -1,6 +1,7 @@
 import path from 'node:path';
 import { camel, pascal, kebab, snake } from 'case';
 import { logger } from '@prisma/sdk';
+import { Options } from 'prettier';
 import { makeHelpers } from './template-helpers';
 import { computeModelParams } from './compute-model-params';
 import { generateConnectDto } from './generate-connect-dto';
@@ -13,6 +14,7 @@ import { isAnnotatedWith } from './field-classifiers';
 
 import type { DMMF } from '@prisma/generator-helper';
 import { NamingStyle, Model, WriteableFileSpecs } from './types';
+import { prettierFormat } from './helpers';
 
 interface RunParam {
   output: string;
@@ -35,6 +37,7 @@ interface RunParam {
   excludeCreateDto: boolean;
   excludeUpdateDto: boolean;
   excludeConnectDto: boolean;
+  prettierOptions?: Options;
 }
 
 export const run = ({
@@ -55,6 +58,7 @@ export const run = ({
     excludeEntity,
     excludeUpdateDto,
     excludePlainDto,
+    prettierOptions,
     ...preAndSuffixes
   } = options;
 
@@ -112,10 +116,13 @@ export const run = ({
         model.output.dto,
         templateHelpers.connectDtoFilename(model.name, true),
       ),
-      content: generateConnectDto({
-        ...modelParams.connect,
-        templateHelpers,
-      }),
+      content: prettierFormat(
+        generateConnectDto({
+          ...modelParams.connect,
+          templateHelpers,
+        }),
+        prettierOptions,
+      ),
     };
 
     // generate create-model.dto.ts
@@ -124,11 +131,14 @@ export const run = ({
         model.output.dto,
         templateHelpers.createDtoFilename(model.name, true),
       ),
-      content: generateCreateDto({
-        ...modelParams.create,
-        exportRelationModifierClasses,
-        templateHelpers,
-      }),
+      content: prettierFormat(
+        generateCreateDto({
+          ...modelParams.create,
+          exportRelationModifierClasses,
+          templateHelpers,
+        }),
+        prettierOptions,
+      ),
     };
     // TODO generate create-model.struct.ts
 
@@ -138,11 +148,14 @@ export const run = ({
         model.output.dto,
         templateHelpers.updateDtoFilename(model.name, true),
       ),
-      content: generateUpdateDto({
-        ...modelParams.update,
-        exportRelationModifierClasses,
-        templateHelpers,
-      }),
+      content: prettierFormat(
+        generateUpdateDto({
+          ...modelParams.update,
+          exportRelationModifierClasses,
+          templateHelpers,
+        }),
+        prettierOptions,
+      ),
     };
     // TODO generate update-model.struct.ts
 
@@ -152,10 +165,13 @@ export const run = ({
         model.output.entity,
         templateHelpers.entityFilename(model.name, true),
       ),
-      content: generateEntity({
-        ...modelParams.entity,
-        templateHelpers,
-      }),
+      content: prettierFormat(
+        generateEntity({
+          ...modelParams.entity,
+          templateHelpers,
+        }),
+        prettierOptions,
+      ),
     };
     // TODO generate model.struct.ts
 
@@ -165,10 +181,13 @@ export const run = ({
         model.output.dto,
         templateHelpers.plainDtoFilename(model.name, true),
       ),
-      content: generatePlainDto({
-        ...modelParams.plain,
-        templateHelpers,
-      }),
+      content: prettierFormat(
+        generatePlainDto({
+          ...modelParams.plain,
+          templateHelpers,
+        }),
+        prettierOptions,
+      ),
     };
 
     const models = [];

@@ -3,6 +3,7 @@ import path from 'node:path';
 import makeDir from 'make-dir';
 import { generatorHandler } from '@prisma/generator-helper';
 import { parseEnvValue } from '@prisma/sdk';
+import { Options, resolveConfig } from 'prettier';
 
 import { run } from './generator';
 
@@ -23,6 +24,12 @@ export const stringToBoolean = (input: string, defaultValue = false) => {
 export const generate = (options: GeneratorOptions) => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const output = parseEnvValue(options.generator.output!);
+  const prettierOptions: Options | undefined =
+    resolveConfig.sync(output, { useCache: false }) ||
+    resolveConfig.sync(path.dirname(require.main?.filename || ''), {
+      useCache: false,
+    }) ||
+    undefined;
 
   const {
     connectDtoPrefix = 'Connect',
@@ -147,6 +154,7 @@ export const generate = (options: GeneratorOptions) => {
     excludeEntity,
     excludeUpdateDto,
     excludePlainDto,
+    prettierOptions,
   });
 
   const indexCollections: Record<string, WriteableFileSpecs> = {};

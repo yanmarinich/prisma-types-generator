@@ -1,5 +1,7 @@
 import path from 'node:path';
 import slash from 'slash';
+import { Options, format } from 'prettier';
+
 import {
   isAnnotatedWith,
   isId,
@@ -322,4 +324,8 @@ export const zipImportStatementParams = (
   }, {} as Record<ImportStatementParams['from'], ImportStatementParams>);
 
   return Object.values(itemsByFrom);
+};
+
+export const prettierFormat = (content: string, options: Options = {}) => {
+  return format(content, { ...options, parser: 'typescript' });
 };
