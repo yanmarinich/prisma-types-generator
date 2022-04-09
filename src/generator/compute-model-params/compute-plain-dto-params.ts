@@ -44,7 +44,9 @@ export const computePlainDtoParams = ({
     if (isAnnotatedWith(field, DTO_ENTITY_HIDDEN)) return result;
 
     if (isRelation(field)) return result;
-    if (relationScalarFieldNames.includes(name)) return result;
+
+    // if you want to remove relation Id field uncomment the next line
+    // if (relationScalarFieldNames.includes(name)) return result;
 
     if (
       !templateHelpers.config.noDependencies &&
