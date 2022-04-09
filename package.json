@@ -27,7 +27,7 @@
     "generate": "npx prisma generate && npm run format -- --loglevel error"
   },
   "bin": {
-    "prisma-generator-nestjs-dto": "dist/cli.js"
+    "prisma-types-generator": "dist/cli.js"
   },
   "engines": {
     "node": ">=14"

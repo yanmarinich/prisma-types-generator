@@ -20,8 +20,8 @@ npm install --save-dev prisma-types-generator
 
 ```prisma
 generator nestjsDto {
-  provider                        = "prisma-generator-nestjs-dto"
-  output                          = "../src/generated/nestjs-dto"
+  provider                        = "prisma-types-generator"
+  output                          = "../src/generated/types"
   outputToNestJsResourceStructure = "false"
   flatResourceStructure           = "false"
   exportRelationModifierClasses   = "true"
@@ -42,7 +42,7 @@ generator nestjsDto {
 
 All parameters are optional.
 
-- [`output`]: (default: `"../src/generated/nestjs-dto"`) - output path relative to your `schema.prisma` file
+- [`output`]: (default: `"../src/generated/types"`) - output path relative to your `schema.prisma` file
 - [`outputToNestJsResourceStructure`]: (default: `"false"`) - writes `dto`s and `entities` to subfolders aligned with [NestJS CRUD generator](https://docs.nestjs.com/recipes/crud-generator). Resource module name is derived from lower-cased model name in `schema.prisma`
 - [`flatResourceStructure`]: (default: `"false"`) - If `outputToNestJsResourceStructure` is `true`, subfolders `dto`s and `entities` are created within the resource folder. Setting this to `true` will flatten the hierarchy.
 - [`exportRelationModifierClasses`]: (default: `"true"`) - Should extra classes generated for relationship field operations on DTOs be exported?
@@ -194,7 +194,7 @@ tags: string[];
   ```prisma
 
 generator nestjsDto {
-provider = "prisma-generator-nestjs-dto"
+provider = "prisma-types-generator"
 output = "../src"
 outputToNestJsResourceStructure = "true"
 }
