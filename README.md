@@ -5,7 +5,6 @@
 1. [Annotations](#annotations)
 1. [Example](#example)
 1. [Principles](#principles)
-1. [License](#license)
 
 ## What is it?
 
@@ -391,7 +390,3 @@ Relation and [relation scalar](https://www.prisma.io/docs/concepts/components/pr
 
 The plain `DTO` class is almost the same as `Entity` with the difference that all relation fields are omitted.
 This is useful if your response is the plain entity without any (optional) relations.
-
-## License
-
-All files are released under the [Apache License 2.0](https://github.com/Brakebein/prisma-generator-nestjs-dto/blob/master/LICENSE).

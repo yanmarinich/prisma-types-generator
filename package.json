@@ -61,5 +61,15 @@
     "ts-jest": "^27.0.5",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yanmarinich/prisma-types-generator.git"
+  },
+  "author": "Yan Marinich",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/yanmarinich/prisma-types-generator/issues"
+  },
+  "homepage": "https://github.com/yanmarinich/prisma-types-generator#readme"
 }
