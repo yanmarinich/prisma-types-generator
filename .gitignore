@@ -1,0 +1,8 @@
+node_modules
+coverage
+dist
+.env
+/src/@generated
+
+# IDE settings
+.idea

@@ -1,0 +1,80 @@
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://johndoe:mypassword@localhost:5432/mydb?schema=public"
+}
+
+generator nestjsDto {
+  provider                        = "node -r ts-node/register/transpile-only src/cli.ts"
+  output                          = "../src/@generated/prisma-generator-nestjs-dto"
+  outputToNestJsResourceStructure = "true"
+  flatResourceStructure           = "true"
+  exportRelationModifierClasses   = "true"
+  reExport                        = "true"
+  createDtoPrefix                 = "Create"
+  updateDtoPrefix                 = "Update"
+  dtoSuffix                       = "Dto"
+  entityPrefix                    = ""
+  entitySuffix                    = ""
+  fileNamingStyle                 = "camel"
+  classValidation                 = "false"
+  noDependencies                  = "false"
+  outputType                      = "class"
+}
+
+model Product {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  /// @Contains('Product')
+  /// @example My first product
+  name        String   @db.VarChar(255)
+  description String   @db.VarChar(1024)
+  /// @maxItems 5
+  images      Json[]   @db.Json
+  highlighted Boolean? @default(false)
+  /// @description Number of reviews
+  /// @minimum 9
+  /// @example 12
+  reviewCount Int?     @default(0)
+  type        ProductType
+  /// @ArrayNotEmpty
+  tags        String[]
+  attributes  Json?
+  score       Float?
+  categoryId  String   @db.Uuid
+  companyId   String   @db.Uuid
+
+  /// @DtoRelationRequired
+  /// @DtoRelationCanConnectOnCreate
+  category Category @relation(fields: [categoryId], references: [id])
+
+  /// @DtoRelationRequired
+  /// @DtoRelationCanConnectOnCreate
+  company Company @relation(fields: [companyId], references: [id])
+
+  /// @DtoEntityHidden
+  /// @DtoCreateOptional
+  /// @DtoUpdateOptional
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+
+  /// @DtoEntityHidden
+  /// @DtoCreateOptional
+  /// @DtoUpdateOptional
+  updatedAt DateTime @updatedAt @db.Timestamptz(6)
+
+  @@map("products")
+}
+
+model Category {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  updatedAt DateTime @updatedAt
+  Product   Product[]
+}
+
+model Company {
+  id      String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  Product Product[]
+}
+
+enum ProductType {
+  digital
+  analogue
+}

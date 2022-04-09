@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "esModuleInterop": true,
+    "lib": ["esnext"],
+    "module": "commonjs",
+    "outDir": "dist",
+    "removeComments": true,
+    "rootDir": "src",
+    "strict": true,
+    "target": "es2019",
+    "typeRoots": ["./src/@types", "./node_modules/@types"]
+  },
+  "exclude": [
+    "node_modules",
+    "coverage",
+    "dist",
+  ]
+}
