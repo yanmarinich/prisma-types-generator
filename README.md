@@ -39,6 +39,7 @@ generator types {
   excludeCreateDto                = "false"
   excludeUpdateDto                = "false"
   excludeConnectDto               = "false"
+  definiteAssignmentAssertion     = "false"
 }
 ```
 
@@ -65,6 +66,7 @@ All parameters are optional.
 - [`classValidation`]: (default: `"false"`) - Add validation decorators from `class-validator`. Not compatible with `noDependencies = "true"` and `outputType = "interface"`.
 - [`noDependencies`]: (default: `"false"`) - Any imports and decorators that are specific to NestJS and Prisma are omitted, such that there are no references to external dependencies. This is useful if you want to generate appropriate DTOs for the frontend.
 - [`outputType`]: (default: `"class"`) - Output the DTOs as `class` or as `interface`. `interface` should only be used to generate DTOs for the frontend.
+- [`definiteAssignmentAssertion`]: (default: `"false"`) - Use definite assignment assertion operator (!) on optional fields. Enable this if you are using TypeScript's `strictPropertyInitialization` option.
 
 ## Annotations
 

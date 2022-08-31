@@ -94,6 +94,7 @@ interface MakeHelpersParam {
   classValidation: boolean;
   outputType: string;
   noDependencies: boolean;
+  definiteAssignmentAssertion: boolean;
 }
 export const makeHelpers = ({
   connectDtoPrefix,
@@ -107,6 +108,7 @@ export const makeHelpers = ({
   classValidation,
   outputType,
   noDependencies,
+  definiteAssignmentAssertion,
 }: MakeHelpersParam) => {
   const className = (name: string, prefix = '', suffix = '') =>
     `${prefix}${transformClassNameCase(name)}${suffix}`;
@@ -162,10 +164,13 @@ export const makeHelpers = ({
   ) =>
     `${decorateApiProperty(field)}${decorateClassValidators(field)}${
       field.name
-    }${unless(field.isRequired && !forceOptional, '?')}: ${fieldType(
-      field,
-      useInputTypes,
-    )};`;
+    }${
+      !field.isRequired || forceOptional
+        ? '?'
+        : definiteAssignmentAssertion
+        ? '!'
+        : ''
+    }: ${fieldType(field, useInputTypes)};`;
 
   const fieldsToDtoProps = (
     fields: ParsedField[],
@@ -179,10 +184,9 @@ export const makeHelpers = ({
     )}`;
 
   const fieldToEntityProp = (field: ParsedField) =>
-    `${decorateApiProperty(field)}${field.name}${unless(
-      field.isRequired,
-      '?',
-    )}: ${fieldType(field)} ${when(field.isNullable, ' | null')};`;
+    `${decorateApiProperty(field)}${field.name}${
+      !field.isRequired ? '?' : definiteAssignmentAssertion ? '!' : ''
+    }: ${fieldType(field)} ${when(field.isNullable, ' | null')};`;
 
   const fieldsToEntityProps = (fields: ParsedField[]) =>
     `${each(fields, (field) => fieldToEntityProp(field), '\n')}`;
