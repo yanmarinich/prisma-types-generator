@@ -1,7 +1,7 @@
 {
   "name": "prisma-types-generator",
   "description": "Generates DTO and Entity classes from Prisma Schema for NestJS",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "main": "dist/index.js",
   "keywords": [
     "prisma",
