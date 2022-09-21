@@ -121,6 +121,11 @@ export const generate = (options: GeneratorOptions) => {
     false,
   );
 
+  const definiteAssignmentAssertion = stringToBoolean(
+    options.generator.config.definiteAssignmentAssertion,
+    false,
+  );
+
   if (classValidation && outputType !== 'class') {
     throw new Error(
       `To use 'validation' validation decorators, 'outputType' must be 'class'.`,
@@ -155,6 +160,7 @@ export const generate = (options: GeneratorOptions) => {
     excludeUpdateDto,
     excludePlainDto,
     prettierOptions,
+    definiteAssignmentAssertion,
   });
 
   const indexCollections: Record<string, WriteableFileSpecs> = {};

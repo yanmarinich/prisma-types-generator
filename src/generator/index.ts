@@ -38,6 +38,7 @@ interface RunParam {
   excludeUpdateDto: boolean;
   excludeConnectDto: boolean;
   prettierOptions?: Options;
+  definiteAssignmentAssertion: boolean;
 }
 
 export const run = ({
@@ -59,6 +60,7 @@ export const run = ({
     excludeUpdateDto,
     excludePlainDto,
     prettierOptions,
+    definiteAssignmentAssertion,
     ...preAndSuffixes
   } = options;
 
@@ -77,6 +79,7 @@ export const run = ({
     classValidation,
     outputType,
     noDependencies,
+    definiteAssignmentAssertion,
     ...preAndSuffixes,
   });
   const allModels = dmmf.datamodel.models;
