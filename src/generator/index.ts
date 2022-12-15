@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { camel, pascal, kebab, snake } from 'case';
-import { logger } from '@prisma/sdk';
+import { logger } from '@prisma/internals';
 import { Options } from 'prettier';
 import { makeHelpers } from './template-helpers';
 import { computeModelParams } from './compute-model-params';
