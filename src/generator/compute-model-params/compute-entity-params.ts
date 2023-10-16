@@ -73,7 +73,7 @@ export const computeEntityParams = ({
           `${getRelativePath(
             model.output.entity,
             modelToImportFrom.output.entity,
-          )}${path.sep}${templateHelpers.entityFilename(field.type)}`,
+          )}${path.sep}${templateHelpers.entityFilename(field.type)}.js`,
         );
 
         // don't double-import the same thing
