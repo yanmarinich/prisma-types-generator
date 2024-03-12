@@ -1,15 +1,24 @@
 import { isId, isUnique } from '../field-classifiers';
-import { mapDMMFToParsedField, uniq } from '../helpers';
+import {
+  makeImportsFromPrismaClient,
+  mapDMMFToParsedField,
+  uniq,
+  zipImportStatementParams,
+} from '../helpers';
 
 import type { DMMF } from '@prisma/generator-helper';
-import type { ConnectDtoParams } from '../types';
+import type { ConnectDtoParams, ImportStatementParams } from '../types';
+import { TemplateHelpers } from '../template-helpers';
 
 interface ComputeConnectDtoParamsParam {
   model: DMMF.Model;
+  templateHelpers: TemplateHelpers;
 }
 export const computeConnectDtoParams = ({
   model,
+  templateHelpers,
 }: ComputeConnectDtoParamsParam): ConnectDtoParams => {
+  const imports: ImportStatementParams[] = [];
   const idFields = model.fields.filter((field) => isId(field));
   const isUniqueFields = model.fields.filter((field) => isUnique(field));
 
@@ -29,5 +38,15 @@ export const computeConnectDtoParams = ({
     mapDMMFToParsedField(field, overrides),
   );
 
-  return { model, fields };
+  const importPrismaClient = makeImportsFromPrismaClient(
+    fields,
+    templateHelpers,
+  );
+  if (importPrismaClient) imports.unshift(importPrismaClient);
+
+  return {
+    model,
+    imports: zipImportStatementParams(imports),
+    fields,
+  };
 };

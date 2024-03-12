@@ -56,7 +56,7 @@ export interface DtoParams {
   imports: ImportStatementParams[];
 }
 
-export type ConnectDtoParams = Omit<DtoParams, 'imports'>;
+export type ConnectDtoParams = DtoParams;
 
 export interface CreateDtoParams extends DtoParams {
   extraClasses: string[];

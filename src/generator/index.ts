@@ -31,6 +31,7 @@ interface RunParam {
   fileNamingStyle: NamingStyle;
   classValidation: boolean;
   outputType: string;
+  prismaClientImport: string;
   noDependencies: boolean;
   excludeEntity: boolean;
   excludePlainDto: boolean;
@@ -53,6 +54,7 @@ export const run = ({
     fileNamingStyle = 'camel',
     classValidation,
     outputType,
+    prismaClientImport,
     noDependencies,
     excludeConnectDto,
     excludeCreateDto,
@@ -79,6 +81,7 @@ export const run = ({
     classValidation,
     outputType,
     noDependencies,
+    prismaClientImport,
     definiteAssignmentAssertion,
     ...preAndSuffixes,
   });

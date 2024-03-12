@@ -7,13 +7,11 @@ interface GenerateConnectDtoParam extends ConnectDtoParams {
 export const generateConnectDto = ({
   model,
   fields,
+  imports,
   templateHelpers: t,
-}: GenerateConnectDtoParam) => {
-  const template = `
+}: GenerateConnectDtoParam) => `
+  ${t.importStatements(imports)}
   export ${t.config.outputType} ${t.connectDtoName(model.name)} {
     ${t.fieldsToDtoProps(fields, true, false)}
   }
-  `;
-
-  return template;
-};
+`;

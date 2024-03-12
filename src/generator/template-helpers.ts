@@ -89,6 +89,7 @@ interface MakeHelpersParam {
   dtoSuffix: string;
   entityPrefix: string;
   entitySuffix: string;
+  prismaClientImport: string;
   transformClassNameCase?: (item: string) => string;
   transformFileNameCase?: (item: string) => string;
   classValidation: boolean;
@@ -103,6 +104,7 @@ export const makeHelpers = ({
   dtoSuffix,
   entityPrefix,
   entitySuffix,
+  prismaClientImport,
   transformClassNameCase = echo,
   transformFileNameCase = echo,
   classValidation,
@@ -202,6 +204,7 @@ export const makeHelpers = ({
       dtoSuffix,
       entityPrefix,
       entitySuffix,
+      prismaClientImport,
       classValidation,
       outputType,
       noDependencies,
