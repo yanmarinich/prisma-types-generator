@@ -156,6 +156,15 @@ export function parseClassValidators(field: DMMF.Field): IClassValidator[] {
       if (validator) {
         validators.push(validator);
       }
+      // INFO: If we want a real Date object, i.e. because of implicitConversion: true for query parameters, we remove the IsRFC3339 which checks that it is a formatted Date string
+      if (validator?.name === 'IsDate') {
+        const rfcIndex = validators.findIndex(
+          (validator) => validator.name === 'IsRFC3339',
+        );
+        if (rfcIndex > -1) {
+          validators.splice(rfcIndex, 1);
+        }
+      }
     }
   }
 
