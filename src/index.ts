@@ -174,7 +174,7 @@ export const generate = (options: GeneratorOptions) => {
         fileName: fileSpec?.fileName || path.join(dirName, 'index.ts'),
         content: [
           fileSpec?.content || '',
-          `export * from './${path.basename(fileName, '.ts')}';`,
+          `export * from './${path.basename(fileName, '.ts')}.js';`,
         ].join('\n'),
       };
     });
